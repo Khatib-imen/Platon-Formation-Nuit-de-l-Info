@@ -1,115 +1,184 @@
 🕷️ Smart Web Automation Agent
 Scraping + Compréhension d’Objectif + Actions Réelles en Temps Réel
+<p align="center"> <img src="https://img.shields.io/badge/AI-Agent-black?style=for-the-badge"/> <img src="https://img.shields.io/badge/DeepSeek-Powered-blue?style=for-the-badge"/> <img src="https://img.shields.io/badge/Web_Automation-Active-green?style=for-the-badge"/> </p>
+🌐 Description du Projet
 
-Scraper automatiquement n’importe quel site web (via URL entrée par l’utilisateur).
+Smart Web Automation Agent est un agent IA capable de :
 
-Analyser le contenu extrait pour identifier les éléments clés (images, textes, boutons, div…).
+🔍 Scraper automatiquement n’importe quel site web
+🧠 Comprendre l’objectif d’un utilisateur en langage naturel
+🕹️ Exécuter des actions réelles en temps réel sur le site via une extension navigateur
+⚙️ Identifier dynamiquement les sélecteurs CSS correspondants
+🎥 Afficher les résultats en démo live dans l'interface UI
 
-Comprendre un objectif utilisateur en langage naturel (ex. “supprimer toutes les images de sacs”, “effacer le mot promo”, “enlever les bannières rouges”…).
+Le tout sans règles codées manuellement :
+➡️ C’est l’IA qui décide comment atteindre l’objectif.
 
-Exécuter réellement l’action sur le site, en temps réel, via une extension navigateur.
-
-Montrer une démonstration live dans l’interface UI.
 🚀 Fonctionnalités Principales
 ✔️ 1. Scraper un site web
 
 Entrer une URL
 
-Le système collecte la structure HTML complète
+Extraction automatique du HTML complet
 
-Nettoyage intelligent + extraction de structure
+Nettoyage intelligent
 
-Visualisation dans l’interface UI
+Prévisualisation instantanée dans l’UI
 
-✔️ 2. Compréhension automatique d’objectif
+✔️ 2. Compréhension intelligente d’objectif utilisateur
 
-Grâce à DeepSeek, l’agent peut comprendre automatiquement :
-
-ce que l’utilisateur veut faire
-
-quelles parties du site sont concernées
-
-quels sélecteurs CSS/HTML correspondent à l’objectif
+L’agent comprend ce que vous voulez faire :
 
 Exemples :
 
 “Supprimer toutes les images de chaussures”
 
-“Retirer la phrase ‘Nouveau produit’”
+“Effacer le mot promo”
 
-“Effacer la bannière en haut du site”
+“Retirer la phrase Nouveau produit”
 
-“Masquer les publicités”
+“Masquer la bannière rouge”
 
-“Enlever le mot SOLDES partout”
+“Enlever le footer”
 
-✔️ 3. Actions en temps réel
+“Supprimer les publicités”
 
-L’agent peut :
+L’IA extrait automatiquement :
 
-supprimer des images
+🎯 L’intention réelle
 
-supprimer un texte ou phrase précise
+🧩 Les éléments concernés
 
-retirer des div
+🧷 Les sélecteurs CSS
 
-masquer des sections
+⚡ Le plan d’action
 
-modifier le style
+✔️ 3. Exécution en temps réel sur le site
 
-restructurer l’interface
+Grâce à l’extension navigateur, l’agent peut :
 
-➡️ Le tout se réalise visuellement dans la démo grâce à l’intégration extension navigateur.
+🖼️ Supprimer des images spécifiques
 
+📝 Retirer un mot ou une phrase partout sur la page
+
+🎨 Modifier styles / couleurs / structure
+
+🗑️ Masquer div, sections, menus, pub
+
+🧱 Reorganiser des blocs
+
+➡️ Le tout visible instantanément dans la fenêtre du navigateur.
 
 🧠 Technologies Utilisées
-Backend
+🖥️ Backend
 
 Python 3.12
 
-Flask (API)
+Flask (API backend)
 
-BeautifulSoup4 (scraping HTML)
+BeautifulSoup4 (analyse HTML)
 
-requests (HTTP client)
+requests
 
-DeepSeek API (LLM for objective understanding)
+python-dotenv
 
-Frontend
+🌐 IA / LLM
 
-HTML / JS simple
-
-Extension navigateur (Chrome) pour exécution en direct
-
-Modèle IA
-
-DeepSeek V3.1 Terminus, via API :
+DeepSeek V3.1 Terminus via API
 
 from openai import OpenAI
 client = OpenAI(base_url="...", api_key="...")
 
+🎨 Frontend
+
+HTML / JavaScript vanilla
+
+Interface utilisateur simple et légère
+
+🧩 Extension Navigateur
+
+Chrome Extension
+
+Exécution directe des actions → DOM manipulé en live
+
+🛠️ Installation & Exécution
+📥 1. Cloner le projet
+git clone https://github.com/Khatib-imen/Smart_Web_Automation_Agent.git
+cd Smart_Web_Automation_Agent
+
+🧬 2. Créer et activer l’environnement virtuel
+Windows
+python -m venv .venv
+.venv\Scripts\activate
+
+Mac / Linux
+python3 -m venv .venv
+source .venv/bin/activate
+
+📦 3. Installer les dépendances
+pip install flask requests beautifulsoup4 python-dotenv
 
 
+Optionnel selon versions :
+
+pip install openai selenium webdriver-manager
+
+🔐 4. Créer votre fichier .env
+
+À la racine du projet :
+
+DEEPSEEK_API_KEY=VOTRE_CLE
+DEEPSEEK_BASE_URL=VOTRE_URL
 
 
-# Crawl - Scraper Crawl4AI : Défi Platon Formation – Nuit de l’Info
+⚠️ Ne jamais pousser .env sur GitHub
 
-## Description
-Crawl est un projet de scraping web interactif utilisant Flask et BeautifulSoup.  
-Il permet de scrapper une page web, afficher son contenu et appliquer des actions intelligentes comme supprimer des images, boutons, logos, barres de recherche, etc.
+▶️ 5. Lancer l’application
+python app.py
 
----
 
-## Prérequis
-- Python 3.10 ou supérieur
-- Git (pour cloner le projet)
-- Connexion Internet
+Accéder à l’interface :
 
----
+👉 http://127.0.0.1:5000/
 
-## Installation et setup
+🧩 6. (Optionnel) Installer l’extension Chrome
 
-### 1. Cloner le dépôt
-```bash
-git clone https://github.com/Khatib-imen/Crawl.git
-cd Crawl
+Aller dans chrome://extensions
+
+Activer Mode développeur
+
+Cliquer Charger l’extension non empaquetée
+
+Choisir :
+
+Smart_Web_Automation_Agent/extension/
+
+
+➡️ L’agent pourra désormais modifier des sites réels en direct.
+
+🎬 Démo : Captures d'Écran
+🖼️ Étape 1 — Scraping du site
+
+(Insérer capture ici)
+
+🧠 Étape 2 — Saisie de l’objectif utilisateur
+
+(Insérer capture ici)
+
+⚡ Étape 3 — L’agent comprend → exécute l’action en temps réel
+
+(Insérer capture ici)
+
+🎯 Conclusion
+
+Avec Smart Web Automation Agent, vous pouvez :
+
+modifier n’importe quel site en temps réel
+
+scraper automatiquement
+
+formuler des actions en langage naturel
+
+laisser l’IA transformer l’interface selon vos besoins
+
+💡 Un agent polyvalent pour le scraping, l’automatisation web et l’édition intelligente.
