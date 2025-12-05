@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>AI Web Cleaner – Live Demo</title>
+
+    <style>
+        /* --- GLOBAL --- */
+        body {
+            font-family: "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #e9efff, #f7f9ff);
+            margin: 0;
+            padding: 40px;
+        }
+
+        /* --- CONTAINER --- */
+        .scraper-container {
+            max-width: 1100px;
+            margin: auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+            animation: fadeIn 0.7s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- TITLE --- */
+        h1 {
+            text-align: center;
+            color: #2b3a67;
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #5d6a8d;
+            font-weight: 400;
+            margin-top: 0;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        /* --- INPUT + BUTTON --- */
+        .input-group {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 72%;
+            padding: 14px 16px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: 1px solid #cbd4e0;
+            transition: 0.3s ease;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #4a6bff;
+            box-shadow: 0 0 5px rgba(74, 107, 255, 0.4);
+        }
+
+        button {
+            padding: 14px 18px;
+            font-size: 16px;
+            margin-left: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: none;
+            background: #4a6bff;
+            color: white;
+            font-weight: 600;
+            transition: 0.25s ease;
+        }
+
+        button:hover {
+            background: #435fe6;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 12px rgba(74, 107, 255, 0.28);
+        }
+
+        /* --- LOADER --- */
+        .loader {
+            display: none;
+            margin: 25px auto;
+            border: 4px solid #ededed;
+            border-top: 4px solid #4a6bff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 0.9s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* --- IFRAME DISPLAY --- */
+        iframe {
+            width: 100%;
+            height: 600px;
+            margin-top: 25px;
+            border: 1px solid #cfd7e6;
+            border-radius: 12px;
+            background: white;
+        }
+
+        /* --- ACTION BUTTON --- */
+        #action-btn {
+            display: none;
+            margin: 25px auto;
+            padding: 14px 20px;
+            background: #f97316;
+            font-size: 17px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            border-radius: 12px;
+            color: white;
+        }
+
+        #action-btn:hover {
+            background: #ea6a10;
+            box-shadow: 0 5px 12px rgba(234, 106, 16, 0.28);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="scraper-container">
+
+        <h1>AI Web Cleaner</h1>
+        <h2>Scraping • Analyse • Suppression intelligente d’éléments en temps réel</h2>
+
+        <!-- Entrée URL -->
+        <div class="input-group">
+            <input id="scrape-url" type="text" placeholder="Entrez l'URL à analyser…">
+            <button id="scrape-btn">Scraper</button>
+        </div>
+
+        <!-- Loader -->
+        <div class="loader" id="loader"></div>
+
+        <!-- Iframe -->
+        <iframe id="site-frame"></iframe>
+
+        <button id="action-btn">Entrer une action à réaliser</button>
+
+    </div>
+
+    <!-- ======= JAVASCRIPT (votre même logique, inchangée) ======= -->
+    <script>
+        /* Votre JS reste le même — aucun changement fonctionnel */
+        const scrapeBtn = document.getElementById("scrape-btn");
+        const scrapeUrl = document.getElementById("scrape-url");
+        const loader = document.getElementById("loader");
+        const siteFrame = document.getElementById("site-frame");
+        const actionBtn = document.getElementById("action-btn");
+
+        let currentHtml = "";
+
+        function removeTextFromNode(node, text) {
+            if (node.nodeType === Node.TEXT_NODE) {
+                const regex = new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                node.textContent = node.textContent.replace(regex, '');
+            } else {
+                node.childNodes.forEach(child => removeTextFromNode(child, text));
+            }
+        }
+
+        scrapeBtn.addEventListener("click", async () => {
+            const url = scrapeUrl.value.trim();
+            if (!url) return alert("Veuillez entrer une URL");
+            loader.style.display = "block";
+
+            try {
+                const res = await fetch("http://127.0.0.1:5000/scrape", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ url })
+                });
+
+                const data = await res.json();
+                currentHtml = data.cleaned_html || data.html || "";
+                siteFrame.srcdoc = currentHtml;
+
+                actionBtn.style.display = "block";
+
+            } catch (err) {
+                alert("Erreur lors du scraping : " + err.message);
+            } finally {
+                loader.style.display = "none";
+            }
+        });
+
+        /* Action intelligence = inchangée */
+        actionBtn.addEventListener("click", () => {
+            if (!currentHtml) return alert("Aucune page scrappée.");
+
+            const command = prompt("Action à exécuter :\nex: 'supprimer logo', 'supprimer barre de recherche', 'supprimer mot voiture'");
+
+            if (!command) return;
+
+            const cmd = command.trim().toLowerCase();
+            const doc = siteFrame.contentWindow.document;
+
+            try {
+                function removeElementByInnerText(text) {
+                    [...doc.querySelectorAll("*")].forEach(el => {
+                        if (el.innerText && el.innerText.toLowerCase().includes(text.toLowerCase())) {
+                            el.remove();
+                        }
+                    });
+                }
+
+                if (cmd.includes("footer")) {
+                    doc.querySelectorAll("footer, .footer, #footer, [role='contentinfo']").forEach(el => el.remove());
+                    return;
+                }
+
+                if (cmd.includes("header") || cmd.includes("navbar") || cmd.includes("menu")) {
+                    doc.querySelectorAll("header, nav, .navbar, .menu").forEach(el => el.remove());
+                    return;
+                }
+
+                if (cmd.includes("barre de recherche") || cmd.includes("search")) {
+                    doc.querySelectorAll("input[type='search'], form[role='search'], .search").forEach(el => el.remove());
+                    return;
+                }
+
+                if (cmd.includes("logo")) {
+                    doc.querySelectorAll("img[alt*='logo' i], .logo, #logo").forEach(el => el.remove());
+                    return;
+                }
+
+                if (cmd.includes("mot") || cmd.includes("phrase") || cmd.includes("texte")) {
+                    const match = cmd.match(/mot\s+(.*)|phrase\s+(.*)|texte\s+(.*)/);
+                    const word = match ? (match[1] || match[2] || match[3]) : null;
+                    if (word) removeTextFromNode(doc.body, word.trim());
+                    return;
+                }
+
+                if (cmd.includes("image")) {
+                    doc.querySelectorAll("img").forEach(el => el.remove());
+                    return;
+                }
+
+                alert("Commande non reconnue.");
+
+            } catch (err) {
+                alert("Erreur : " + err.message);
+            }
+        });
+    </script>
+</body>
+
+</html>
