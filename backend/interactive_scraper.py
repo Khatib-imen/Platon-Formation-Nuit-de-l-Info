@@ -8,7 +8,7 @@ async def interactive_scraper():
         return
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=False)  # navigateur visible
+        browser = await p.chromium.launch(headless=False)  
         page = await browser.new_page()
         await page.goto(url)
         print(f"Site chargé : {url}")
@@ -25,7 +25,7 @@ async def interactive_scraper():
                 await page.evaluate("""() => {
                     document.querySelectorAll('img').forEach(img => img.remove());
                 }""")
-                print("✅ Toutes les images ont été supprimées.")
+                print("Toutes les images ont été supprimées.")
 
             elif choice == "2":
                 word = input("Entrez le mot à supprimer : ").strip()
@@ -35,7 +35,7 @@ async def interactive_scraper():
                             document.body.innerHTML = document.body.innerHTML.replaceAll('{word}', '');
                         }}
                     """)
-                    print(f"✅ Le mot '{word}' a été supprimé.")
+                    print(f" Le mot '{word}' a été supprimé.")
 
             elif choice == "3":
                 selector = input("Entrez le sélecteur CSS : ").strip()
@@ -45,7 +45,7 @@ async def interactive_scraper():
                             document.querySelectorAll('{selector}').forEach(el => el.remove());
                         }}
                     """)
-                    print(f"✅ Tous les éléments '{selector}' ont été supprimés.")
+                    print(f"Tous les éléments '{selector}' ont été supprimés.")
 
             elif choice == "4":
                 print("Fin de la session.")
@@ -53,10 +53,10 @@ async def interactive_scraper():
             else:
                 print("Option invalide, réessayez.")
 
-        # Garde le navigateur ouvert pour voir le résultat
         print("La page reste ouverte 60s pour observation...")
         await asyncio.sleep(60)
         await browser.close()
 
 if __name__ == "__main__":
     asyncio.run(interactive_scraper())
+
